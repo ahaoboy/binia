@@ -1,0 +1,12 @@
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
+stats.html
+yarn-error.log
+# Local Netlify folder
+.netlify
+*.exe
+*.pdb
+.vercel
