@@ -1,20 +1,40 @@
-import { useState } from "react";
-const state = { c: 1 };
-export default () => {
-  const [, update] = useState(0);
-  const forceUpdate = () => update((c) => c + 1);
+import { store, incA, incB, incAB } from "./store";
+import { useSnapshot } from "../../src";
 
+function A() {
+  console.log("A");
+  const {
+    counter: { a },
+  } = useSnapshot(store);
+  return <h1>A:{a}</h1>;
+}
+function B() {
+  console.log("B");
+  const {
+    counter: { b },
+  } = useSnapshot(store);
+  return <h1>A:{b}</h1>;
+}
+function C() {
+  console.log("C");
   return (
-    <div>
-      <h1>c:{state.c}</h1>
-      <button
-        onClick={() => {
-          state.c++;
-        }}
-      >
-        add
-      </button>
-      <button onClick={forceUpdate}>update</button>
-    </div>
+    <>
+      <button onClick={incA}>incA</button>
+      <button onClick={incB}>incB</button>
+      <button onClick={incAB}>incAB</button>
+    </>
   );
-};
+}
+
+function App() {
+  console.log("app");
+  return (
+    <>
+      <A />
+      <B />
+      <C />
+    </>
+  );
+}
+
+export default App;
