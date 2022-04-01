@@ -72,7 +72,7 @@ export function proxy<T extends object>(initialObject: T = {} as T): T {
     if (!propListener) {
       propListener = (op, nextVersion) => {
         const newOp: Op = [...op]
-        newOp[1] = [prop, ...(newOp[1] as Path)]
+        newOp[1] = [prop, ...newOp[1]]
         notifyUpdate(newOp, nextVersion)
       }
       propListeners.set(prop, propListener)
@@ -201,7 +201,7 @@ export function proxy<T extends object>(initialObject: T = {} as T): T {
     const desc = Object.getOwnPropertyDescriptor(
       initialObject,
       key
-    ) as PropertyDescriptor
+    )!
     if (desc.get || desc.set) {
       Object.defineProperty(baseObject, key, desc)
     } else {
@@ -238,9 +238,9 @@ export function subscribe<T extends object>(
       })
     }
   }
-  ;(proxyObject as any)[LISTENERS].add(listener)
+    ; (proxyObject as any)[LISTENERS].add(listener)
   return () => {
-    ;(proxyObject as any)[LISTENERS].delete(listener)
+    ; (proxyObject as any)[LISTENERS].delete(listener)
   }
 }
 
@@ -252,8 +252,8 @@ export type Snapshot<T> = T extends AnyFunction
   : T extends Promise<infer V>
   ? Snapshot<V>
   : {
-      readonly [K in keyof T]: Snapshot<T[K]>
-    }
+    readonly [K in keyof T]: Snapshot<T[K]>
+  }
 
 export function snapshot<T extends object>(proxyObject: T): Snapshot<T> {
   if (__DEV__ && !(proxyObject as any)?.[SNAPSHOT]) {
@@ -269,19 +269,19 @@ export function getHandler<T extends object>(proxyObject: T) {
   return (proxyObject as any)[HANDLER]
 }
 
-
+// ----------------------------------------------------------------
 type GetCompleted<C extends object> = {
   [k in keyof C]: C[k] extends (...args: any[]) => infer R
-    ? R
-    : C[k] extends { get: () => infer R }
-    ? R
-    : never
+  ? R
+  : C[k] extends { get: () => infer R }
+  ? R
+  : never
 }
 export function proxyWithComputed<T extends object, U extends object>(
   initialObject: T,
-  computedFns: U & ThisType<T & GetCompleted<U>>
+  computedFns: U & ThisType<T & GetCompleted<U>> = {} as any
 ): T & GetCompleted<U> {
-  ;(Object.keys(computedFns) as (keyof U)[]).forEach((key) => {
+  ; (Object.keys(computedFns) as (keyof U)[]).forEach((key) => {
     if (Object.getOwnPropertyDescriptor(initialObject, key)) {
       throw new Error('object property already defined')
     }
@@ -294,11 +294,14 @@ export function proxyWithComputed<T extends object, U extends object>(
     }
     let computedValue: U[typeof key]
     let prevSnapshot: Snapshot<T> | undefined
-    let affected = new WeakMap()
+    let affected = new WeakMap();
     const desc: PropertyDescriptor = {}
     desc.get = () => {
       const nextSnapshot = snapshot(proxyObject) as any
+
       if (!prevSnapshot || isChanged(prevSnapshot, nextSnapshot, affected)) {
+        // 第一次读取的时候会进来, 根据读了那些属性记录到affect里面
+        // 后面只有用到的变化后才会重新计算, 这个isChanged对比是根据用了那些属性来的, 不会无脑全部遍历
         affected = new WeakMap()
         const obj = createProxyToCompare(nextSnapshot, affected)
         computedValue = get.call(obj)
@@ -314,3 +317,5 @@ export function proxyWithComputed<T extends object, U extends object>(
   const proxyObject = proxy(initialObject) as any
   return proxyObject
 }
+
+export const defineStore = proxyWithComputed
