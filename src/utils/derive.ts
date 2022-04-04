@@ -223,11 +223,12 @@ export function derive<T extends object, U extends object>(
         }
       }
       const dependencies = new Map<object, DependencyEntry>()
-      const get = <P extends object>(p: P) => {
+      function get   <P extends object>(p: P) {
+        console.log('get',options?.proxy)
         dependencies.set(p, { v: getVersion(p) as number })
         return p
       }
-      const value = fn(get)
+      const value = fn.call(options?.proxy, get)
       const subscribeToDependencies = () => {
         dependencies.forEach((entry, p) => {
           const lastSubscription = lastDependencies?.get(p)?.s

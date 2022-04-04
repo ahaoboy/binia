@@ -11,29 +11,48 @@ const store = defineStore({
         return this.doubled * 2;
       },
       set(v: number) {
-        console.log("v", v);
         this.count = v >> 2;
       },
     },
   },
   derive: {
     hello(get) {
-      return "hello" + get(storeA).w;
+      // work but type is error
+      console.log("doubled", (this as any).doubled);
+      return "hello" + get(storeA).w ;
     },
   },
 });
-
-function App() {
-  const { count, doubled, quadrupled, hello } = useSnapshot(store);
+function A() {
+  console.log("A");
+  const { hello } = useSnapshot(store);
   return (
     <div>
       <h2>hello:{hello}</h2>
+    </div>
+  );
+}
+function B() {
+  console.log("B");
+  const { count, doubled, quadrupled } = useSnapshot(store);
+  return (
+    <div>
       <h2>count:{count}</h2>
       <h2>doubled:{doubled}</h2>
       <h2>quadrupled:{quadrupled}</h2>
+    </div>
+  );
+}
+function App() {
+  return (
+    <div>
+      <A></A>
+      <B></B>
       <button onClick={() => store.count++}>inc count</button>
       <button onClick={() => store.quadrupled--}>dec quadrupled</button>
-      <button onClick={() => (storeA.w = "world " + count)}>world</button>
+      <button onClick={() => (storeA.w = "world " + store.doubled)}>
+        world
+      </button>
     </div>
   );
 }

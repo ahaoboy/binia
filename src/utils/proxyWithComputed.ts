@@ -55,7 +55,7 @@ export function proxyWithComputed<T extends object, U extends object>(
       | ((snap: Snapshot<T>) => U[K])
       | {
           get: (snap: Snapshot<T>) => U[K]
-          set?: (state: T, newValue: U[K]) => void
+          set?: ( newValue: U[K]) => void
         }
   }
 ) {
@@ -68,7 +68,7 @@ export function proxyWithComputed<T extends object, U extends object>(
       typeof computedFn === 'function' ? { get: computedFn } : computedFn
     ) as {
       get: () => U[typeof key]
-      set?: (state: T, newValue: U[typeof key]) => void
+      set?: (newValue: U[typeof key]) => void
     }
     let computedValue: U[typeof key]
     let prevSnapshot: Snapshot<T> | undefined
@@ -85,7 +85,7 @@ export function proxyWithComputed<T extends object, U extends object>(
       return computedValue
     }
     if (set) {
-      desc.set = (newValue) => set(proxyObject, newValue)
+      desc.set = (newValue) => set.call(proxyObject, newValue)
     }
     Object.defineProperty(initialObject, key, desc)
   })
