@@ -1,7 +1,7 @@
 import { useSnapshot, defineStore } from "../../dist";
 const storeA = defineStore({ state: { w: "world" } });
 const store = defineStore({
-  state: { count: 1 },
+  state: { count: 1, repeat: 1 },
   computed: {
     doubled() {
       return this.count * 2;
@@ -17,9 +17,13 @@ const store = defineStore({
   },
   derive: {
     hello(get) {
-      // work but type is error
-      console.log("doubled", (this as any).doubled);
-      return "hello" + get(storeA).w ;
+      return "hello" + get(storeA).w;
+    },
+    helloRepeat(get) {
+      return "hello: " + get(this).repeat;
+    },
+    helloDouble(get) {
+      return "hello: " + get(this as any).doubled;
     },
   },
 });
@@ -43,13 +47,35 @@ function B() {
     </div>
   );
 }
+function C() {
+  console.log("C");
+  const { helloRepeat } = useSnapshot(store);
+  return (
+    <div>
+      <h2>helloRepeat:{helloRepeat}</h2>
+    </div>
+  );
+}
+function D() {
+  console.log("D");
+  const { helloDouble } = useSnapshot(store);
+  return (
+    <div>
+      <h2>helloDouble:{helloDouble}</h2>
+    </div>
+  );
+}
+
 function App() {
   return (
     <div>
       <A></A>
       <B></B>
+      <C></C>
+      <D></D>
       <button onClick={() => store.count++}>inc count</button>
       <button onClick={() => store.quadrupled--}>dec quadrupled</button>
+      <button onClick={() => store.repeat++}> repeat</button>
       <button onClick={() => (storeA.w = "world " + store.doubled)}>
         world
       </button>
