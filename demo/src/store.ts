@@ -1,5 +1,6 @@
 import { proxy, subscribe } from "../../src";
 
+
 export const store = proxy({
   counter: {
     a: { b: 1 },
