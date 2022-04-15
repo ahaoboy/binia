@@ -1,7 +1,8 @@
 ## Demo
 
 - [count](https://stackblitz.com/edit/vitejs-vite-8lrx7g?file=src/App.tsx&terminal=dev)
-- [derive](https://stackblitz.com/edit/vitejs-vite-4up5zf?file=src%2FApp.tsx&terminal=dev)
+- [computed](https://stackblitz.com/edit/vitejs-vite-4up5zf?file=src%2FApp.tsx&terminal=dev)
+- [derive](https://stackblitz.com/edit/vitejs-vite-4kjfqc?file=package-lock.json&terminal=dev)
 - [xstate](https://stackblitz.com/edit/vitejs-vite-pwtyip?file=src/App.tsx&terminal=dev)
 
 ## install
@@ -88,14 +89,16 @@ const decAsync = async (v = 1) => {
 用 derive 函数定义一个派生自多个 store 的新 store, 每个属性都是一个参数为 get 的函数, 访问时的属性值为函数返回值, 通过 get 函数收集依赖, 下面的案例中 storeC.c 变化后属性 ab 是不会变化的, 只有 storeA.a 或者 storeB.b 变化后 ab 才会更新, 对应的组件也会重新 render
 
 ```ts
-const storeA = proxy({ a: 1 });
-const storeB = proxy({ b: 2 });
+const storeA = defineStore({ state: { a: 1 } });
+const storeB = defineStore({ state: { b: 1 } });
+const storeC = defineStore({ state: { c: 1 } });
 
 const storeD = derive({
   ab(get) {
-    return get(storeA).a + "--" + get(storeB).b + "--" + storeC.c;
+    return get(storeA).a + '--' + get(storeB).b + '--' + storeC.c;
   },
 });
+
 ```
 
 ## TS 支持
