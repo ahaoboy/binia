@@ -1,28 +1,27 @@
 export * from "./react";
 export * from "./vanilla";
+export * from "./utils/derive";
 import { proxyWithComputed } from "./utils/proxyWithComputed";
 import { derive as proxyWithDerive } from "./utils/derive";
-export * from "./utils/derive";
-
-type Fn = (...args: any[]) => any;
+import type { Snapshot } from "./vanilla";
 type State = Record<string, any>;
-type GetFn = <T>(s: T) => T;
+type GetFn = <T>(s: T) => Snapshot<T>;
 type GetCompleted<C> = {
   [k in keyof C]: C[k] extends (...args: any[]) => infer R
     ? R
     : C[k] extends { get: (...args: any[]) => infer R }
     ? R
-    : C[k];
+    : never;
 };
 
 type GetDerive<C> = {
-  [k in keyof C]: C[k] extends (...args: any[]) => infer R ? R : C[k];
+  [k in keyof C]: C[k] extends (...args: any[]) => infer R ? R : never;
 };
 
 type Options = {
   sync: boolean;
 };
-type M<S, C, D, P = S & GetCompleted<C>> = {
+type Model<S, C, D, P = S & GetCompleted<C>> = {
   state: S;
   computed?: C & ThisType<P>;
   derive?: D & ThisType<S>;
@@ -33,7 +32,7 @@ export function defineStore<
   S extends State,
   C,
   D extends Record<string, (get: GetFn) => any>
->(model: M<S, C, D>): S & GetCompleted<C> & GetDerive<D> {
+>(model: Model<S, C, D>): S & GetCompleted<C> & Snapshot<GetDerive<D>> {
   const { state = {}, computed = {}, derive = {}, options = {} } = model;
   const p = proxyWithComputed(state, computed);
   const d = proxyWithDerive(derive, { proxy: p, sync: options?.sync });

@@ -1,5 +1,5 @@
 import { getVersion, proxy, subscribe } from '../vanilla'
-
+import type {Snapshot} from '../vanilla'
 type DeriveGet = <T extends object>(proxyObject: T) => T
 
 type Subscription = {
@@ -262,7 +262,7 @@ export function derive<T extends object, U extends object>(
     }
     evaluate()
   })
-  return proxyObject as T & U
+  return proxyObject as Snapshot<T & U>
 }
 
 /**
