@@ -1,6 +1,6 @@
 {
   "name": "binia",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "",
   "main": "./dist/index.js",
   "import": "./dist/index.mjs",
@@ -17,6 +17,7 @@
   "author": "阿豪boy",
   "license": "ISC",
   "dependencies": {
+    "proxy-compare": "^2.1.0",
     "use-sync-external-store": "^1.0.0"
   },
   "peerDependencies": {

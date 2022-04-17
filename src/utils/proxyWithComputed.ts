@@ -1,4 +1,4 @@
-import { createProxy as createProxyToCompare, isChanged } from '../proxy-compare'
+import { createProxy as createProxyToCompare, isChanged } from 'proxy-compare'
 import { proxy, snapshot } from '../vanilla'
 
 // Unfortunatly, this doesn't work with tsc.

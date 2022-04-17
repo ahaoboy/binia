@@ -7,6 +7,7 @@ specifiers:
   '@types/react-dom': ^17.0.10
   '@types/use-sync-external-store': ^0.0.3
   cross-env: ^7.0.3
+  proxy-compare: ^2.1.0
   react: ^17.0.2
   react-dom: ^17.0.2
   tsup: ^5.12.1
@@ -14,6 +15,7 @@ specifiers:
   use-sync-external-store: ^1.0.0
 
 dependencies:
+  proxy-compare: 2.1.0
   use-sync-external-store: 1.0.0_react@17.0.2
 
 devDependencies:
@@ -700,6 +702,10 @@ packages:
       lilconfig: 2.0.4
       yaml: 1.10.2
     dev: true
+
+  /proxy-compare/2.1.0:
+    resolution: {integrity: sha512-wapJ3h/w8fRSyPEG0y2WMV+tf9xwvj3nxM6aHVuPEOwKs/t5xLSKZb44ubNTiqq2T6lmEMHEWGMTaU2L6ddaFA==}
+    dev: false
 
   /queue-microtask/1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
