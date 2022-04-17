@@ -1,3 +1,4 @@
+inspired by [valtio](https://github.com/pmndrs/valtio)
 ## Demo
 
 - [count](https://stackblitz.com/edit/vitejs-vite-8lrx7g?file=src/App.tsx&terminal=dev)

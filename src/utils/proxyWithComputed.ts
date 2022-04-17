@@ -1,4 +1,4 @@
-import { createProxy as createProxyToCompare, isChanged } from 'proxy-compare'
+import memoize from '../proxy-memoize'
 import { proxy, snapshot } from '../vanilla'
 
 // Unfortunatly, this doesn't work with tsc.
@@ -21,8 +21,8 @@ type Snapshot<T> = T extends AnyFunction
   : T extends Promise<infer V>
   ? Snapshot<V>
   : {
-      readonly [K in keyof T]: Snapshot<T[K]>
-    }
+    readonly [K in keyof T]: Snapshot<T[K]>
+  }
 
 /**
  * proxyWithComputed
@@ -52,14 +52,14 @@ export function proxyWithComputed<T extends object, U extends object>(
   initialObject: T,
   computedFns: {
     [K in keyof U]:
-      | ((snap: Snapshot<T>) => U[K])
-      | {
-          get: (snap: Snapshot<T>) => U[K]
-          set?: ( newValue: U[K]) => void
-        }
+    | (() => U[K])
+    | {
+      get: () => U[K]
+      set?: (newValue: U[K]) => void
+    }
   }
 ) {
-  ;(Object.keys(computedFns) as (keyof U)[]).forEach((key) => {
+  ; (Object.keys(computedFns) as (keyof U)[]).forEach((key) => {
     if (Object.getOwnPropertyDescriptor(initialObject, key)) {
       throw new Error('object property already defined')
     }
@@ -70,22 +70,12 @@ export function proxyWithComputed<T extends object, U extends object>(
       get: () => U[typeof key]
       set?: (newValue: U[typeof key]) => void
     }
-    let computedValue: U[typeof key]
-    let prevSnapshot: Snapshot<T> | undefined
-    let affected = new WeakMap()
     const desc: PropertyDescriptor = {}
-    desc.get = () => {
-      const nextSnapshot = snapshot(proxyObject)
-      if (!prevSnapshot || isChanged(prevSnapshot, nextSnapshot, affected)) {
-        affected = new WeakMap()
-        const p = createProxyToCompare(nextSnapshot, affected)
-        computedValue = get.call(p)
-        prevSnapshot = nextSnapshot
-      }
-      return computedValue
-    }
+    const memoizedGet = memoize(get)
+    desc.get = () => memoizedGet(snapshot(proxyObject))
+    
     if (set) {
-      desc.set = (newValue) => set.call(proxyObject, newValue)
+      desc.set = (newValue) => set(newValue)
     }
     Object.defineProperty(initialObject, key, desc)
   })
