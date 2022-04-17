@@ -1,43 +1,38 @@
-import { store, incA, incB, incAB } from "./store";
-import { useSnapshot, subscribe } from "../../src";
-
-function A() {
-  console.log("A");
-  const {
-    counter: {
-      a: { b: b },
+import { useSnapshot, defineStore } from '../../dist';
+const store = defineStore({
+  state: { count: 1 },
+  computed: {
+    doubled() {
+      return this.count * 2;
     },
-  } = useSnapshot(store);
-  return <h1>A:{b}</h1>;
-}
-function B() {
-  console.log("B");
-  const {
-    counter: { b },
-  } = useSnapshot(store);
-  return <h1>A:{b}</h1>;
-}
-
+    quadrupled: {
+      get() {
+        return this.doubled * 2;
+      },
+      set(v: number) {
+        this.count = v >> 2;
+      },
+    },
+  },
+});
 function C() {
-  console.log("C");
+  console.log('C');
+  const { count, doubled, quadrupled } = useSnapshot(store);
   return (
-    <>
-      <button onClick={incA}>incA</button>
-      <button onClick={incB}>incB</button>
-      <button onClick={incAB}>incAB</button>
-    </>
+    <div>
+      <h2>count:{count}</h2>
+      <h2>doubled:{doubled}</h2>
+      <h2>quadrupled:{quadrupled}</h2>
+    </div>
   );
 }
-
 function App() {
-  console.log("app");
   return (
-    <>
-      <A />
-      <B />
+    <div>
       <C />
-    </>
+      <button onClick={() => store.count++}>inc count</button>
+      <button onClick={() => store.quadrupled--}>dec count</button>
+    </div>
   );
 }
-
 export default App;

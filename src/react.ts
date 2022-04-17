@@ -3,7 +3,7 @@ import {
   affectedToPathList,
   createProxy as createProxyToCompare,
   isChanged,
-} from "proxy-compare";
+} from "./proxy-compare";
 import { useSyncExternalStore } from "use-sync-external-store/shim";
 import { getVersion, snapshot, subscribe, Snapshot } from "./vanilla";
 

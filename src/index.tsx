@@ -3,7 +3,15 @@ export * from "./vanilla";
 export * from "./utils/derive";
 import { proxyWithComputed } from "./utils/proxyWithComputed";
 import { derive as proxyWithDerive } from "./utils/derive";
+export { derive } from "./utils/derive";
 import type { Snapshot } from "./vanilla";
+export { proxyWithComputed };
+export * from "./utils/watch";
+export * from "./utils/subscribeKey";
+export * from "./utils//proxyWithHistory";
+export * from "./utils//devtools";
+export * from "./utils/addComputed";
+
 type State = Record<string, any>;
 type GetFn = <T>(s: T) => Snapshot<T>;
 type GetCompleted<C> = {

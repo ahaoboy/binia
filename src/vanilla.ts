@@ -1,4 +1,4 @@
-import { getUntracked, markToTrack } from 'proxy-compare'
+import { getUntracked, markToTrack } from './proxy-compare'
 
 const VERSION = Symbol()
 const LISTENERS = Symbol()
