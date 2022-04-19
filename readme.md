@@ -5,6 +5,7 @@ inspired by [valtio](https://github.com/pmndrs/valtio)
 - [computed](https://stackblitz.com/edit/vitejs-vite-4up5zf?file=src%2FApp.tsx&terminal=dev)
 - [derive](https://stackblitz.com/edit/vitejs-vite-4kjfqc?file=package-lock.json&terminal=dev)
 - [xstate](https://stackblitz.com/edit/vitejs-vite-pwtyip?file=src/App.tsx&terminal=dev)
+- [set/map](https://stackblitz.com/edit/vitejs-vite-v5cavs?file=src/App.tsx&terminal=dev)
 
 ## install
 

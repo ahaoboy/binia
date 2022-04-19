@@ -11,6 +11,8 @@ export * from "./utils/subscribeKey";
 export * from "./utils//proxyWithHistory";
 export * from "./utils//devtools";
 export * from "./utils/addComputed";
+export * from "./utils/proxyMap";
+export * from "./utils/proxySet";
 
 type State = Record<string, any>;
 type GetFn = <T>(s: T) => Snapshot<T>;
