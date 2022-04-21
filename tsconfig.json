@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
     "experimentalDecorators": true,
-    "target": "ESNext",
+    "target": "esnext",
     "useDefineForClassFields": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "allowJs": false,
-    "skipLibCheck": false,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
@@ -15,9 +15,12 @@
     "resolveJsonModule": true,
     "isolatedModules": false,
     "noEmit": true,
-    "types": ["node"],
+    "paths": {
+      "binia": ["./src/index.ts"],
+      "binia/*": ["./src/*.ts"]
+    },
     "jsx": "react-jsx"
   },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src/**/*", "tests/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
