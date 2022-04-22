@@ -1,5 +1,5 @@
-import { proxy, ref, snapshot, subscribe } from '../vanilla'
-
+import { ref, snapshot, subscribe } from '../vanilla'
+import { defineStore } from '../index'
 /**
  * proxyWithHistory
  *
@@ -9,7 +9,7 @@ import { proxy, ref, snapshot, subscribe } from '../vanilla'
  * - history: an array holding the history of snapshots
  * - historyIndex: the history index to the current snapshot
  * - canUndo: a function to return true if undo is available
- * - undo: a function to go back hisotry
+ * - undo: a function to go back history
  * - canRedo: a function to return true if redo is available
  * - redo: a function to go forward history
  * - saveHistory: a function to save history
@@ -24,7 +24,7 @@ import { proxy, ref, snapshot, subscribe } from '../vanilla'
  * })
  */
 export function proxyWithHistory<V>(initialValue: V, skipSubscribe = false) {
-  const proxyObject = proxy({
+  const proxyObject = defineStore({state:{
     value: initialValue,
     history: ref({
       wip: initialValue, // to avoid infinite loop
@@ -71,7 +71,7 @@ export function proxyWithHistory<V>(initialValue: V, skipSubscribe = false) {
           proxyObject.saveHistory()
         }
       }),
-  })
+  }})
   proxyObject.saveHistory()
   if (!skipSubscribe) {
     proxyObject.subscribe()

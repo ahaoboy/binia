@@ -75,7 +75,7 @@ export function proxyWithComputed<T extends object, U extends object>(
     desc.get = () => memoizedGet(snapshot(proxyObject))
     
     if (set) {
-      desc.set = (newValue) => set(newValue)
+      desc.set = (newValue) => set.call(proxyObject, newValue);
     }
     Object.defineProperty(initialObject, key, desc)
   })
