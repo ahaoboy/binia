@@ -6,6 +6,8 @@ import {
 } from "proxy-compare";
 import { useSyncExternalStore } from "use-sync-external-store/shim";
 import { getVersion, snapshot, subscribe, Snapshot } from "./vanilla";
+import type { ComponentType } from "react";
+import React from 'react'
 
 const useAffectedDebugValue = <State extends object>(
   state: State,
@@ -154,10 +156,44 @@ export function useSnapshot<T extends object>(
       }
     }
   });
-  if (__DEV__) {
+  if (process.env.NODE_ENV === 'production') {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useAffectedDebugValue(currSnapshot, affected);
   }
   const proxyCache = useMemo(() => new WeakMap(), []); // per-hook proxyCache
   return createProxyToCompare(currSnapshot, affected, proxyCache);
+}
+
+
+function withProxy<
+  Store extends object,
+  P extends object,
+  S extends object,
+  A extends object
+>(
+  store: Store,
+  C: ComponentType<P>,
+  mapState?: (s: Snapshot<Store>, props: Omit<P, keyof (S & A)>) => S,
+  mapActions?: (s: Store, props: Omit<P, keyof (S & A)>) => A
+) {
+  return function WrappedComponent(props: Omit<P, keyof (S & A)>) {
+    const snap = useSnapshot(store);
+    const state = mapState?.(snap, props) ?? {};
+    const actions = mapActions?.(store, props) ?? {};
+    // @ts-ignore
+    // redux-react also ignore this type
+    return <C {...props} {...state} {...actions} />;
+  };
+}
+export function connect<
+  Store extends object,
+  S extends object,
+  A extends object
+>(
+  store: Store,
+  mapState?: (s: Snapshot<Store>, p?: any) => S,
+  mapActions?: (s: Store, p?: any) => A
+) {
+  return <P extends object>(C: ComponentType<P>) =>
+    withProxy(store, C, mapState, mapActions);
 }

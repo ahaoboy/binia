@@ -13,9 +13,6 @@ export default defineConfig((options) => {
     noExternal: [],
     platform: "browser",
     dts: true,
-    define: {
-      __DEV__: process.env.NODE_ENV === 'production' ? 'false' : 'true',
-    },
   };
 
   return [{ ...common, entry: ["./src/index.tsx"], outDir: "./dist" }];

@@ -52,13 +52,13 @@ export function devtools<T extends object>(
   let extension: typeof window['__REDUX_DEVTOOLS_EXTENSION__'] | false
   try {
     extension =
-      (typeof enabled === 'boolean' ? enabled : __DEV__) &&
+      (typeof enabled === 'boolean' ? enabled : process.env.NODE_ENV === 'production') &&
       window.__REDUX_DEVTOOLS_EXTENSION__
   } catch {
     // ignored
   }
   if (!extension) {
-    if (__DEV__ && enabled) {
+    if (process.env.NODE_ENV === 'production' && enabled) {
       console.warn('[Warning] Please install/enable Redux devtools extension')
     }
     return
