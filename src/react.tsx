@@ -173,8 +173,8 @@ function withProxy<
 >(
   store: Store,
   C: ComponentType<P>,
-  mapState?: (s: Snapshot<Store>, props: Omit<P, keyof (S & A)>) => S,
-  mapActions?: (s: Store, props: Omit<P, keyof (S & A)>) => A
+  mapState?: (snap: Snapshot<Store>, props: Omit<P, keyof (S & A)>) => S,
+  mapActions?: (store: Store, props: Omit<P, keyof (S & A)>) => A
 ) {
   return function WrappedComponent(props: Omit<P, keyof (S & A)>) {
     const snap = useSnapshot(store);
@@ -191,8 +191,8 @@ export function connect<
   A extends object
 >(
   store: Store,
-  mapState?: (s: Snapshot<Store>, p?: any) => S,
-  mapActions?: (s: Store, p?: any) => A
+  mapState?: (snap?: Snapshot<Store>, props?: any) => S,
+  mapActions?: (store?: Store, props?: any) => A
 ) {
   return <P extends object>(C: ComponentType<P>) =>
     withProxy(store, C, mapState, mapActions);

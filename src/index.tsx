@@ -45,6 +45,6 @@ export function defineStore<
 >(model: Model<S, C, D>): S & GetCompleted<C> & Snapshot<GetDerive<D>> {
   const { state = {}, computed = {}, derive = {}, options = {} } = model;
   const p = proxyWithComputed(state, computed);
-  const d = proxyWithDerive(derive, { proxy: p, sync: !!(options?.sync) });
+  const d = proxyWithDerive(derive, { proxy: p, sync: !!options?.sync });
   return d as any;
 }
