@@ -1,14 +1,13 @@
-export * from "./react";
-export * from "./vanilla";
-export * from "./utils/derive";
-import { proxyWithComputed } from "./utils/proxyWithComputed";
-export { derive } from "./utils/derive";
-export { proxyWithComputed };
-export * from "./utils/watch";
-export * from "./utils/subscribeKey";
-export * from "./utils//proxyWithHistory";
-export * from "./utils//devtools";
-export * from "./utils/addComputed";
-export * from "./utils/proxyMap";
-export * from "./utils/proxySet";
-export * from "./define-store";
+export * from './react'
+export * from './vanilla'
+export * from './utils/derive'
+import { proxyWithComputed } from './utils/proxyWithComputed'
+export { proxyWithComputed }
+export * from './utils/watch'
+export * from './utils/subscribeKey'
+export * from './utils//proxyWithHistory'
+export * from './utils//devtools'
+export * from './utils/addComputed'
+export * from './utils/proxyMap'
+export * from './utils/proxySet'
+export * from './define-store'

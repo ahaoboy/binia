@@ -1,28 +1,33 @@
-import { useCallback, useDebugValue, useEffect, useMemo, useRef } from "react";
+import type { ComponentType } from 'react'
+import React, {
+  useCallback,
+  useDebugValue,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react'
 import {
   affectedToPathList,
   createProxy as createProxyToCompare,
   isChanged,
-} from "proxy-compare";
-import { useSyncExternalStore } from "use-sync-external-store/shim";
-import { getVersion, snapshot, subscribe, Snapshot } from "./vanilla";
-import type { ComponentType } from "react";
-import React from 'react'
+} from 'proxy-compare'
+import { useSyncExternalStore } from 'use-sync-external-store/shim'
+import { Snapshot, getVersion, snapshot, subscribe } from './vanilla'
 
 const useAffectedDebugValue = <State extends object>(
   state: State,
   affected: WeakMap<object, unknown>
 ) => {
-  const pathList = useRef<(string | number | symbol)[][]>();
+  const pathList = useRef<(string | number | symbol)[][]>()
   useEffect(() => {
-    pathList.current = affectedToPathList(state, affected);
-  });
-  useDebugValue(pathList.current);
-};
+    pathList.current = affectedToPathList(state, affected)
+  })
+  useDebugValue(pathList.current)
+}
 
 type Options = {
-  sync?: boolean;
-};
+  sync?: boolean
+}
 
 /**
  * useSnapshot
@@ -100,26 +105,26 @@ export function useSnapshot<T extends object>(
   proxyObject: T,
   options?: Options
 ): Snapshot<T> {
-  const affected = new WeakMap();
-  const lastAffected = useRef<typeof affected>();
-  const lastCallback = useRef<() => void>();
-  const notifyInSync = options?.sync;
+  const affected = new WeakMap()
+  const lastAffected = useRef<typeof affected>()
+  const lastCallback = useRef<() => void>()
+  const notifyInSync = options?.sync
   const currSnapshot = useSyncExternalStore(
     useCallback(
       (callback) => {
-        lastCallback.current = callback;
-        const unsub = subscribe(proxyObject, callback, notifyInSync);
+        lastCallback.current = callback
+        const unsub = subscribe(proxyObject, callback, notifyInSync)
         return () => {
-          unsub();
-          lastCallback.current = undefined;
-        };
+          unsub()
+          lastCallback.current = undefined
+        }
       },
       [proxyObject, notifyInSync]
     ),
     useMemo(() => {
-      let prevSnapshot: Snapshot<T> | undefined;
+      let prevSnapshot: Snapshot<T> | undefined
       return () => {
-        const nextSnapshot = snapshot(proxyObject);
+        const nextSnapshot = snapshot(proxyObject)
         try {
           if (
             prevSnapshot &&
@@ -132,38 +137,37 @@ export function useSnapshot<T extends object>(
             )
           ) {
             // not changed
-            return prevSnapshot;
+            return prevSnapshot
           }
         } catch (e) {
           // ignore if a promise or something is thrown
         }
-        return (prevSnapshot = nextSnapshot);
-      };
+        return (prevSnapshot = nextSnapshot)
+      }
     }, [proxyObject])
-  );
-  const currVersion = getVersion(proxyObject);
+  )
+  const currVersion = getVersion(proxyObject)
   useEffect(() => {
-    lastAffected.current = affected;
+    lastAffected.current = affected
     // check if state has changed between render and commit
     if (currVersion !== getVersion(proxyObject)) {
       if (lastCallback.current) {
-        lastCallback.current();
+        lastCallback.current()
       } else if (
-        typeof process === "object" &&
-        process.env.NODE_ENV !== "production"
+        typeof process === 'object' &&
+        process.env.NODE_ENV !== 'production'
       ) {
-        console.warn("[Bug] last callback is undefined");
+        console.warn('[Bug] last callback is undefined')
       }
     }
-  });
+  })
   if (process.env.NODE_ENV === 'production') {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    useAffectedDebugValue(currSnapshot, affected);
+    useAffectedDebugValue(currSnapshot, affected)
   }
-  const proxyCache = useMemo(() => new WeakMap(), []); // per-hook proxyCache
-  return createProxyToCompare(currSnapshot, affected, proxyCache);
+  const proxyCache = useMemo(() => new WeakMap(), []) // per-hook proxyCache
+  return createProxyToCompare(currSnapshot, affected, proxyCache)
 }
-
 
 function withProxy<
   Store extends object,
@@ -177,13 +181,14 @@ function withProxy<
   mapActions?: (store: Store, props: Omit<P, keyof (S & A)>) => A
 ) {
   return function WrappedComponent(props: Omit<P, keyof (S & A)>) {
-    const snap = useSnapshot(store);
-    const state = mapState?.(snap, props) ?? {};
-    const actions = mapActions?.(store, props) ?? {};
+    const snap = useSnapshot(store)
+    const state = mapState?.(snap, props) ?? {}
+    const actions = mapActions?.(store, props) ?? {}
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     // redux-react also ignore this type
-    return <C {...props} {...state} {...actions} />;
-  };
+    return <C {...props} {...state} {...actions} />
+  }
 }
 export function connect<
   Store extends object,
@@ -195,5 +200,5 @@ export function connect<
   mapActions?: (store?: Store, props?: any) => A
 ) {
   return <P extends object>(C: ComponentType<P>) =>
-    withProxy(store, C, mapState, mapActions);
+    withProxy(store, C, mapState, mapActions)
 }

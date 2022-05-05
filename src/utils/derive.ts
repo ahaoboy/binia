@@ -1,5 +1,5 @@
 import { getVersion, proxy, subscribe } from '../vanilla'
-import type {Snapshot} from '../vanilla'
+import type { Snapshot } from '../vanilla'
 type DeriveGet = <T extends object>(proxyObject: T) => T
 
 type Subscription = {
@@ -223,7 +223,7 @@ export function derive<T extends object, U extends object>(
         }
       }
       const dependencies = new Map<object, DependencyEntry>()
-      function get   <P extends object>(p: P) {
+      function get<P extends object>(p: P) {
         dependencies.set(p, { v: getVersion(p) as number })
         return p
       }

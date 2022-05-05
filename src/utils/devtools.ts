@@ -52,7 +52,9 @@ export function devtools<T extends object>(
   let extension: typeof window['__REDUX_DEVTOOLS_EXTENSION__'] | false
   try {
     extension =
-      (typeof enabled === 'boolean' ? enabled : process.env.NODE_ENV === 'production') &&
+      (typeof enabled === 'boolean'
+        ? enabled
+        : process.env.NODE_ENV === 'production') &&
       window.__REDUX_DEVTOOLS_EXTENSION__
   } catch {
     // ignored

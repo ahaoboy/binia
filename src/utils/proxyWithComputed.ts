@@ -12,17 +12,17 @@ import { proxy, snapshot } from '../vanilla'
 //   type Snapshot<T extends object> = ReturnType<SnapshotWrapper<T>['fn']>
 //
 // Using copy-paste types for now:
-type AsRef = { $$valtioRef: true }
-type AnyFunction = (...args: any[]) => any
-type Snapshot<T> = T extends AnyFunction
-  ? T
-  : T extends AsRef
-  ? T
-  : T extends Promise<infer V>
-  ? Snapshot<V>
-  : {
-    readonly [K in keyof T]: Snapshot<T[K]>
-  }
+// type AsRef = { $$valtioRef: true }
+// type AnyFunction = (...args: any[]) => any
+// type Snapshot<T> = T extends AnyFunction
+//   ? T
+//   : T extends AsRef
+//   ? T
+//   : T extends Promise<infer V>
+//   ? Snapshot<V>
+//   : {
+//       readonly [K in keyof T]: Snapshot<T[K]>
+//     }
 
 /**
  * proxyWithComputed
@@ -52,15 +52,15 @@ export function proxyWithComputed<T extends object, U extends object>(
   initialObject: T,
   computedFns: {
     [K in keyof U]:
-    | (() => U[K])
-    | {
-      get: () => U[K]
-      set?: (newValue: U[K]) => void
-    }
+      | (() => U[K])
+      | {
+          get: () => U[K]
+          set?: (newValue: U[K]) => void
+        }
   },
   options?: { size: number }
 ) {
-  ; (Object.keys(computedFns) as (keyof U)[]).forEach((key) => {
+  ;(Object.keys(computedFns) as (keyof U)[]).forEach((key) => {
     if (Object.getOwnPropertyDescriptor(initialObject, key)) {
       throw new Error('object property already defined')
     }
@@ -76,7 +76,7 @@ export function proxyWithComputed<T extends object, U extends object>(
     desc.get = () => memoizedGet(snapshot(proxyObject))
 
     if (set) {
-      desc.set = (newValue) => set.call(proxyObject, newValue);
+      desc.set = (newValue) => set.call(proxyObject, newValue)
     }
     Object.defineProperty(initialObject, key, desc)
   })

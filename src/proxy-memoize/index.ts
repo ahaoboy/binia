@@ -1,49 +1,45 @@
-import {
-  createProxy,
-  isChanged,
-  getUntracked,
-  trackMemo,
-} from 'proxy-compare';
+import { createProxy, getUntracked, isChanged, trackMemo } from 'proxy-compare'
 import { CircularQueue } from './queue'
 
-type Affected = WeakMap<object, Set<string | number | symbol>>;
+type Affected = WeakMap<object, Set<string | number | symbol>>
 
-const isObject = (x: unknown): x is object => typeof x === 'object' && x !== null;
+const isObject = (x: unknown): x is object =>
+  typeof x === 'object' && x !== null
 
 const untrack = <T>(x: T, seen: Set<T>): T => {
-  if (!isObject(x)) return x;
-  const untrackedObj = getUntracked(x);
+  if (!isObject(x)) return x
+  const untrackedObj = getUntracked(x)
   if (untrackedObj !== null) {
-    trackMemo(x);
-    return untrackedObj;
+    trackMemo(x)
+    return untrackedObj
   }
   if (!seen.has(x)) {
-    seen.add(x);
+    seen.add(x)
     Object.entries(x).forEach(([k, v]) => {
-      const vv = untrack(v, seen);
-      if (!Object.is(vv, v)) x[k as keyof T] = vv;
-    });
+      const vv = untrack(v, seen)
+      if (!Object.is(vv, v)) x[k as keyof T] = vv
+    })
   }
-  return x;
-};
+  return x
+}
 
 const touchAffected = (x: unknown, orig: unknown, affected: Affected) => {
-  if (!isObject(x) || !isObject(orig)) return;
-  const used = affected.get(orig);
-  if (!used) return;
+  if (!isObject(x) || !isObject(orig)) return
+  const used = affected.get(orig)
+  if (!used) return
   used.forEach((key) => {
     touchAffected(
       x[key as keyof typeof x],
       orig[key as keyof typeof orig],
-      affected,
-    );
-  });
-};
+      affected
+    )
+  })
+}
 
 // properties
-const OBJ_PROPERTY = 'o';
-const RESULT_PROPERTY = 'r';
-const AFFECTED_PROPERTY = 'a';
+const OBJ_PROPERTY = 'o'
+const RESULT_PROPERTY = 'r'
+const AFFECTED_PROPERTY = 'a'
 
 /**
  * Create a memoized function
@@ -58,58 +54,68 @@ const AFFECTED_PROPERTY = 'a';
  */
 const memoize = <Obj extends object, Result>(
   fn: () => Result,
-  options?: { size?: number, target?: any },
-): (obj: Obj) => Result => {
-  const size = options?.size ?? 2;
+  options?: { size?: number; target?: any }
+): ((obj: Obj) => Result) => {
+  const size = options?.size ?? 2
   const memoList = new CircularQueue<{
-    [OBJ_PROPERTY]: Obj;
-    [RESULT_PROPERTY]: Result;
-    [AFFECTED_PROPERTY]: Affected;
-  }>(size);
-  const resultCache = new WeakMap<Obj, {
-    [RESULT_PROPERTY]: Result;
-    [AFFECTED_PROPERTY]: Affected;
-  }>();
-  const proxyCache = new WeakMap();
-  function memoizedFn(obj: Obj) {
-    const origObj = getUntracked(obj);
-    const cacheKey = origObj || obj;
-    const cache = resultCache.get(cacheKey);
-    if (cache) {
-      touchAffected(obj, cacheKey, cache[AFFECTED_PROPERTY]);
-      return cache[RESULT_PROPERTY];
+    [OBJ_PROPERTY]: Obj
+    [RESULT_PROPERTY]: Result
+    [AFFECTED_PROPERTY]: Affected
+  }>(size)
+  const resultCache = new WeakMap<
+    Obj,
+    {
+      [RESULT_PROPERTY]: Result
+      [AFFECTED_PROPERTY]: Affected
     }
-    const memoListSize = memoList.size();
+  >()
+  const proxyCache = new WeakMap()
+  function memoizedFn(obj: Obj) {
+    const origObj = getUntracked(obj)
+    const cacheKey = origObj || obj
+    const cache = resultCache.get(cacheKey)
+    if (cache) {
+      touchAffected(obj, cacheKey, cache[AFFECTED_PROPERTY])
+      return cache[RESULT_PROPERTY]
+    }
+    const memoListSize = memoList.size()
     for (let i = 0; i < memoListSize; i += 1) {
-      const memo = memoList.get(i);
-      if (!isChanged(memo[OBJ_PROPERTY], obj, memo[AFFECTED_PROPERTY], new WeakMap())) {
+      const memo = memoList.get(i)
+      if (
+        !isChanged(
+          memo[OBJ_PROPERTY],
+          obj,
+          memo[AFFECTED_PROPERTY],
+          new WeakMap()
+        )
+      ) {
         resultCache.set(cacheKey, {
           [RESULT_PROPERTY]: memo[RESULT_PROPERTY],
           [AFFECTED_PROPERTY]: memo[AFFECTED_PROPERTY],
-        });
-        touchAffected(obj, cacheKey, memo[AFFECTED_PROPERTY]);
-        return memo[RESULT_PROPERTY];
+        })
+        touchAffected(obj, cacheKey, memo[AFFECTED_PROPERTY])
+        return memo[RESULT_PROPERTY]
       }
     }
-    const affected: Affected = new WeakMap();
-    const proxy = createProxy(obj, affected, proxyCache);
-    const result = untrack(fn.call(proxy), new Set());
+    const affected: Affected = new WeakMap()
+    const proxy = createProxy(obj, affected, proxyCache)
+    const result = untrack(fn.call(proxy), new Set())
     if (origObj !== null) {
-      touchAffected(obj, origObj, affected);
+      touchAffected(obj, origObj, affected)
     }
     memoList.enqueue({
       [OBJ_PROPERTY]: cacheKey,
       [RESULT_PROPERTY]: result,
       [AFFECTED_PROPERTY]: affected,
-    });
+    })
     resultCache.set(cacheKey, {
       [RESULT_PROPERTY]: result,
       [AFFECTED_PROPERTY]: affected,
-    });
-    return result;
-  };
-  return memoizedFn;
-};
+    })
+    return result
+  }
+  return memoizedFn
+}
 
 /**
  * This is to unwrap a proxy object and return an original object.
@@ -127,6 +133,6 @@ const memoize = <Obj extends object, Result>(
  *   return { sum: obj.a + obj.b, diff: obj.a - obj.b };
  * });
  */
-export { getUntracked as getUntrackedObject } from 'proxy-compare';
+export { getUntracked as getUntrackedObject } from 'proxy-compare'
 
-export default memoize;
+export default memoize
