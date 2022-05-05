@@ -58,7 +58,7 @@ export function proxyWithComputed<T extends object, U extends object>(
       set?: (newValue: U[K]) => void
     }
   },
-  options: { size: number }
+  options?: { size: number }
 ) {
   ; (Object.keys(computedFns) as (keyof U)[]).forEach((key) => {
     if (Object.getOwnPropertyDescriptor(initialObject, key)) {
@@ -72,7 +72,7 @@ export function proxyWithComputed<T extends object, U extends object>(
       set?: (newValue: U[typeof key]) => void
     }
     const desc: PropertyDescriptor = {}
-    const memoizedGet = memoize(get, { size: options.size })
+    const memoizedGet = memoize(get, { size: options?.size ?? 2 })
     desc.get = () => memoizedGet(snapshot(proxyObject))
 
     if (set) {

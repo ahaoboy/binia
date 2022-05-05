@@ -2,7 +2,12 @@
   "compilerOptions": {
     "composite": true,
     "module": "esnext",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "paths": {
+      "binia": ["./src/index.ts"],
+      "binia/*": ["./src/*.ts"]
+    }
   },
-  "include": ["vite.config.ts"]
+  "include": ["src/**/*", "tests/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
