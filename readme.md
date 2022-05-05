@@ -3,10 +3,12 @@ inspired by [valtio](https://github.com/pmndrs/valtio)
 
 - [count](https://stackblitz.com/edit/vitejs-vite-8lrx7g?file=src/App.tsx&terminal=dev)
 - [computed](https://stackblitz.com/edit/vitejs-vite-4up5zf?file=src%2FApp.tsx&terminal=dev)
+- [computed cache size](https://stackblitz.com/edit/vitejs-vite-vfha75?file=src/App.tsx&terminal=dev)
 - [derive](https://stackblitz.com/edit/vitejs-vite-4kjfqc?file=package-lock.json&terminal=dev)
 - [xstate](https://stackblitz.com/edit/vitejs-vite-pwtyip?file=src/App.tsx&terminal=dev)
 - [set/map](https://stackblitz.com/edit/vitejs-vite-v5cavs?file=src/App.tsx&terminal=dev)
 - [class](https://stackblitz.com/edit/vitejs-vite-rwtasn?file=src%2FApp.tsx&terminal=dev)
+- [react18](https://stackblitz.com/edit/vitejs-vite-erjtet?file=src%2FApp.tsx&terminal=dev)
 
 ## install
 
@@ -56,6 +58,8 @@ const state2 = defineStore({
   },
 });
 ```
+#### options
+computedCacheSize: 自定义computed的缓存大小, 默认2 [demo](https://stackblitz.com/edit/vitejs-vite-vfha75?file=src/App.tsx&terminal=dev)
 
 ### useSnapshot
 
@@ -104,6 +108,49 @@ const storeD = derive({
 
 ```
 
+### connect
+可以在class组件中使用
+
+```tsx
+const inc = () => {
+  store.count++;
+};
+type Store = typeof store;
+type Snap = Snapshot<Store>;
+const mapState = (snap: Snap) => {
+  return {
+    c: snap.count,
+    d: snap.quadrupled,
+  };
+};
+type MapState = ReturnType<typeof mapState>;
+type MapActions = ReturnType<typeof mapActions>;
+type Props = { name: string };
+
+const mapActions = (store: Store) => {
+  return {
+    inc,
+    dec: () => {
+      store.count--;
+    },
+  };
+};
+
+class A extends React.Component<MapActions & MapState & Props> {
+  render() {
+    return (
+      <div>
+        <h2>c:{this.props.c}</h2>
+        <h2>d:{this.props.d}</h2>
+        <button onClick={this.props.inc}>inc</button>
+        <button onClick={this.props.dec}>dec</button>
+      </div>
+    );
+  }
+}
+
+const C = connect(store, mapState, mapActions)(A);
+```
 ## TS 支持
 
 ### 自定义类型

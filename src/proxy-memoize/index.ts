@@ -60,7 +60,7 @@ const memoize = <Obj extends object, Result>(
   fn: () => Result,
   options?: { size?: number, target?: any },
 ): (obj: Obj) => Result => {
-  const size = options?.size ?? 1;
+  const size = options?.size ?? 2;
   const memoList = new CircularQueue<{
     [OBJ_PROPERTY]: Obj;
     [RESULT_PROPERTY]: Result;
