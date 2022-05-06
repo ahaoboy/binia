@@ -1,8 +1,14 @@
 import { StrictMode, Suspense, useEffect, useRef } from 'react'
 import { fireEvent, render } from '@testing-library/react'
-import { proxy, snapshot, subscribe, useSnapshot } from '../src'
-import { derive, underive } from '../src'
-import {vi} from 'vitest'
+import { vi } from 'vitest'
+import {
+  derive,
+  proxy,
+  snapshot,
+  subscribe,
+  underive,
+  useSnapshot,
+} from '../src'
 const sleep = (ms: number) =>
   new Promise((resolve) => {
     setTimeout(resolve, ms)

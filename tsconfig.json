@@ -15,10 +15,6 @@
     "resolveJsonModule": true,
     "isolatedModules": false,
     "noEmit": true,
-    "paths": {
-      "binia": ["./src/index.ts"],
-      "binia/*": ["./src/*.ts"]
-    },
     "jsx": "react-jsx"
   },
   "include": ["src/**/*", "tests/**/*"],

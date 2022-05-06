@@ -1,6 +1,5 @@
-import { watch } from '../src'
-import { proxy } from '../src'
-import {vi} from 'vitest'
+import { vi } from 'vitest'
+import { proxy, watch } from '../src'
 describe('watch', () => {
   it('should re-run for individual proxy updates', async () => {
     const reference = proxy({ value: 'Example' })

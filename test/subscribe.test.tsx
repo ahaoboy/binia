@@ -1,6 +1,5 @@
-import { proxy, ref, subscribe } from '../src'
-import { subscribeKey } from '../src'
-import {vi} from 'vitest'
+import { vi } from 'vitest'
+import { proxy, ref, subscribe, subscribeKey } from '../src'
 const consoleWarn = console.warn
 beforeEach(() => {
   console.warn = vi.fn((message) => {

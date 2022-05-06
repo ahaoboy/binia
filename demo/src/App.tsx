@@ -1,30 +1,30 @@
-import { useSnapshot, defineStore } from '../../dist';
+import { defineStore, useSnapshot } from '../../dist'
 const store = defineStore({
   state: { count: 1 },
   computed: {
     doubled() {
-      return this.count * 2;
+      return this.count * 2
     },
     quadrupled: {
       get() {
-        return this.doubled * 2;
+        return this.doubled * 2
       },
       set(v: number) {
-        this.count = v >> 2;
+        this.count = v >> 2
       },
     },
   },
-});
+})
 function C() {
-  console.log('C');
-  const { count, doubled, quadrupled } = useSnapshot(store);
+  console.log('C')
+  const { count, doubled, quadrupled } = useSnapshot(store)
   return (
     <div>
       <h2>count:{count}</h2>
       <h2>doubled:{doubled}</h2>
       <h2>quadrupled:{quadrupled}</h2>
     </div>
-  );
+  )
 }
 function App() {
   return (
@@ -33,6 +33,6 @@ function App() {
       <button onClick={() => store.count++}>inc count</button>
       <button onClick={() => store.quadrupled--}>dec count</button>
     </div>
-  );
+  )
 }
-export default App;
+export default App

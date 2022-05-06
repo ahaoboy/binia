@@ -1,7 +1,7 @@
 import { StrictMode, useEffect, useRef, useState } from 'react'
 import { fireEvent, render, waitFor } from '@testing-library/react'
+import { vi } from 'vitest'
 import { proxy, useSnapshot } from '../src'
-import {vi} from 'vitest';
 
 // import * as jest from 'jest'
 it('simple counter', async () => {

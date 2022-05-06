@@ -1,99 +1,93 @@
-import { proxy, snapshot, subscribe, useSnapshot } from "../src";
-import { proxyWithComputed } from "../src";
-import { vi } from "vitest";
-const consoleWarn = console.warn;
+import { vi } from 'vitest'
+import { proxyWithComputed, snapshot, subscribe } from '../src'
+const consoleWarn = console.warn
 beforeEach(() => {
   console.warn = vi.fn((message) => {
-    if (message.startsWith("addComputed is deprecated.")) {
-      return;
+    if (message.startsWith('addComputed is deprecated.')) {
+      return
     }
-    consoleWarn(message);
-  });
-});
+    consoleWarn(message)
+  })
+})
 afterEach(() => {
-  console.warn = consoleWarn;
-});
+  console.warn = consoleWarn
+})
 
-const sleep = (ms: number) =>
-  new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-
-it("simple computed getters", async () => {
-  const computeDouble = vi.fn((x) => x * 2);
+it('simple computed getters', async () => {
+  const computeDouble = vi.fn((x) => x * 2)
   const state = proxyWithComputed(
     {
-      text: "",
+      text: '',
       count: 0,
     },
     {
       doubled: {
         get() {
-          return computeDouble(this.count);
+          return computeDouble(this.count)
         },
       },
     }
-  );
+  )
 
-  const callback = vi.fn();
-  subscribe(state, callback);
+  const callback = vi.fn()
+  subscribe(state, callback)
 
-  expect(snapshot(state)).toMatchObject({ text: "", count: 0, doubled: 0 });
-  expect(computeDouble).toBeCalledTimes(1);
-  expect(callback).toBeCalledTimes(0);
+  expect(snapshot(state)).toMatchObject({ text: '', count: 0, doubled: 0 })
+  expect(computeDouble).toBeCalledTimes(1)
+  expect(callback).toBeCalledTimes(0)
 
-  state.count += 1;
-  await Promise.resolve();
-  expect(snapshot(state)).toMatchObject({ text: "", count: 1, doubled: 2 });
-  expect(computeDouble).toBeCalledTimes(2);
-  expect(callback).toBeCalledTimes(1);
+  state.count += 1
+  await Promise.resolve()
+  expect(snapshot(state)).toMatchObject({ text: '', count: 1, doubled: 2 })
+  expect(computeDouble).toBeCalledTimes(2)
+  expect(callback).toBeCalledTimes(1)
 
-  state.text = "a";
-  await Promise.resolve();
-  expect(snapshot(state)).toMatchObject({ text: "a", count: 1, doubled: 2 });
-  expect(computeDouble).toBeCalledTimes(2);
-  expect(callback).toBeCalledTimes(2);
-});
+  state.text = 'a'
+  await Promise.resolve()
+  expect(snapshot(state)).toMatchObject({ text: 'a', count: 1, doubled: 2 })
+  expect(computeDouble).toBeCalledTimes(2)
+  expect(callback).toBeCalledTimes(2)
+})
 
-it("computed getters and setters", async () => {
-  const computeDouble = vi.fn((x) => x * 2);
+it('computed getters and setters', async () => {
+  const computeDouble = vi.fn((x) => x * 2)
   const state = proxyWithComputed(
     {
-      text: "",
+      text: '',
       count: 0,
     },
     {
       doubled: {
         get() {
-          return computeDouble(this.count);
+          return computeDouble(this.count)
         },
         set(newValue: number) {
-          this.count = newValue / 2;
+          this.count = newValue / 2
         },
       },
     }
-  );
+  )
 
-  expect(snapshot(state)).toMatchObject({ text: "", count: 0, doubled: 0 });
-  expect(computeDouble).toBeCalledTimes(1);
+  expect(snapshot(state)).toMatchObject({ text: '', count: 0, doubled: 0 })
+  expect(computeDouble).toBeCalledTimes(1)
 
-  state.count += 1;
-  await Promise.resolve();
-  expect(snapshot(state)).toMatchObject({ text: "", count: 1, doubled: 2 });
-  expect(computeDouble).toBeCalledTimes(2);
+  state.count += 1
+  await Promise.resolve()
+  expect(snapshot(state)).toMatchObject({ text: '', count: 1, doubled: 2 })
+  expect(computeDouble).toBeCalledTimes(2)
 
-  state.doubled = 1;
-  await Promise.resolve();
-  expect(snapshot(state)).toMatchObject({ text: "", count: 0.5, doubled: 1 });
-  expect(computeDouble).toBeCalledTimes(3);
+  state.doubled = 1
+  await Promise.resolve()
+  expect(snapshot(state)).toMatchObject({ text: '', count: 0.5, doubled: 1 })
+  expect(computeDouble).toBeCalledTimes(3)
 
-  state.text = "a";
-  await Promise.resolve();
-  expect(snapshot(state)).toMatchObject({ text: "a", count: 0.5, doubled: 1 });
-  expect(computeDouble).toBeCalledTimes(3);
-});
+  state.text = 'a'
+  await Promise.resolve()
+  expect(snapshot(state)).toMatchObject({ text: 'a', count: 0.5, doubled: 1 })
+  expect(computeDouble).toBeCalledTimes(3)
+})
 
-it("computed setters with object and array", async () => {
+it('computed setters with object and array', async () => {
   const state = proxyWithComputed(
     {
       obj: { a: 1 },
@@ -102,40 +96,40 @@ it("computed setters with object and array", async () => {
     {
       object: {
         get() {
-          return this.obj;
+          return this.obj
         },
         set(newValue: any) {
-          this.obj = newValue;
+          this.obj = newValue
         },
       },
       array: {
         get() {
-          return this.arr;
+          return this.arr
         },
         set(newValue: any) {
-          this.arr = newValue;
+          this.arr = newValue
         },
       },
     }
-  );
+  )
 
   expect(snapshot(state)).toMatchObject({
     obj: { a: 1 },
     arr: [2],
     object: { a: 1 },
     array: [2],
-  });
+  })
 
-  state.object = { a: 2 };
-  state.array = [3];
-  await Promise.resolve();
+  state.object = { a: 2 }
+  state.array = [3]
+  await Promise.resolve()
   expect(snapshot(state)).toMatchObject({
     obj: { a: 2 },
     arr: [3],
     object: { a: 2 },
     array: [3],
-  });
-});
+  })
+})
 
 // it("simple addComputed", async () => {
 //   const computeDouble = vi.fn((x) => x * 2);

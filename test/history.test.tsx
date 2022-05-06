@@ -1,7 +1,6 @@
 import { StrictMode } from 'react'
 import { fireEvent, render } from '@testing-library/react'
-import { useSnapshot } from '../src'
-import { proxyWithHistory } from '../src'
+import { proxyWithHistory, useSnapshot } from '../src'
 
 it('simple count', async () => {
   const state = proxyWithHistory(0)
