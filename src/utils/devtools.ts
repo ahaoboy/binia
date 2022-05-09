@@ -35,7 +35,7 @@ export function devtools<T extends object>(
  * Limitation: Only plain objects/values are supported.
  *
  * @example
- * import { devtools } from 'valtio/utils'
+ * import { devtools } from 'binia'
  * const state = proxy({ count: 0, text: 'hello' })
  * const unsub = devtools(state, 'state name')
  */

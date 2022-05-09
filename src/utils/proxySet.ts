@@ -13,7 +13,7 @@ type InternalProxySet<T> = Set<T> & {
  * The API is the same as Set API
  *
  * @example
- * import { proxySet } from 'valtio/utils'
+ * import { proxySet } from 'binia'
  * const state = proxySet([1,2,3])
  * //can be used inside a proxy as well
  * const state = proxy({

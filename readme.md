@@ -107,7 +107,6 @@ const storeD = derive({
 });
 
 ```
-
 ### connect
 可以在class组件中使用
 
@@ -151,6 +150,31 @@ class A extends React.Component<MapActions & MapState & Props> {
 
 const C = connect(store, mapState, mapActions)(A);
 ```
+### devtools
+安装Redux DevTools 插件, 然后调用devtools函数开启
+```ts
+import { devtools, defineStore } from 'binia';
+
+const store = defineStore({
+  state: { count: 1 },
+  computed: {
+    doubled() {
+      return this.count * 2;
+    },
+    quadrupled: {
+      get() {
+        return this.doubled * 2;
+      },
+      set(v: number) {
+        this.count = v >> 2;
+      },
+    },
+  },
+});
+devtools(store, { name: 'demo',enabled: true })
+
+```
+
 ## TS 支持
 
 ### 自定义类型

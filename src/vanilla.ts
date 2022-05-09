@@ -7,7 +7,7 @@ const HANDLER = Symbol()
 const PROMISE_RESULT = Symbol()
 const PROMISE_ERROR = Symbol()
 
-type AsRef = { $$valtioRef: true }
+type AsRef = { $$biniaRef: true }
 const refSet = new WeakSet()
 export function ref<T extends object>(o: T): T & AsRef {
   refSet.add(o)

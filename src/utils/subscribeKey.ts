@@ -8,7 +8,7 @@ import { subscribe } from '../vanilla'
  * notifyInSync: same as the parameter to subscribe(); true disables batching of subscriptions.
  *
  * @example
- * import { subscribeKey } from 'valtio/utils'
+ * import { subscribeKey } from 'binia'
  * subscribeKey(state, 'count', (v) => console.log('state.count has changed to', v))
  */
 export function subscribeKey<T extends object, K extends keyof T>(

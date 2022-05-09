@@ -1,29 +1,6 @@
 import memoize from '../proxy-memoize'
 import { proxy, snapshot } from '../vanilla'
 
-// Unfortunatly, this doesn't work with tsc.
-// Hope to find a solution to make this work.
-//
-//   class SnapshotWrapper<T extends object> {
-//     fn(p: T) {
-//       return snapshot(p)
-//     }
-//   }
-//   type Snapshot<T extends object> = ReturnType<SnapshotWrapper<T>['fn']>
-//
-// Using copy-paste types for now:
-// type AsRef = { $$valtioRef: true }
-// type AnyFunction = (...args: any[]) => any
-// type Snapshot<T> = T extends AnyFunction
-//   ? T
-//   : T extends AsRef
-//   ? T
-//   : T extends Promise<infer V>
-//   ? Snapshot<V>
-//   : {
-//       readonly [K in keyof T]: Snapshot<T[K]>
-//     }
-
 /**
  * proxyWithComputed
  *
@@ -37,7 +14,7 @@ import { proxy, snapshot } from '../vanilla'
  * Measurement and comparison will be very important.
  *
  * @example
- * import { proxyWithComputed } from 'valtio/utils'
+ * import { proxyWithComputed } from 'binia'
  * const state = proxyWithComputed({
  *   count: 1,
  * }, {

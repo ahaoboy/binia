@@ -18,7 +18,7 @@ import { ref, snapshot, subscribe } from '../vanilla'
  * Suspense/promise is not supported.
  *
  * @example
- * import { proxyWithHistory } from 'valtio/utils'
+ * import { proxyWithHistory } from 'binia'
  * const state = proxyWithHistory({
  *   count: 1,
  * })

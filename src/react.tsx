@@ -66,10 +66,10 @@ type Options = {
  * above what happens with the original proxy when you replace the child proxy.
  *
  * > console.log(state)
- * { profile: { name: "valtio" } }
+ * { profile: { name: "binia" } }
  * > childState = state.profile
  * > console.log(childState)
- * { name: "valtio" }
+ * { name: "binia" }
  * > state.profile.name = "react"
  * > console.log(childState)
  * { name: "react" }

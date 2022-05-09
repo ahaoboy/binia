@@ -1,4 +1,5 @@
-import { defineStore, useSnapshot } from '../../dist'
+import { defineStore, devtools, useSnapshot } from '../../dist'
+
 const store = defineStore({
   state: { count: 1 },
   computed: {
@@ -15,6 +16,9 @@ const store = defineStore({
     },
   },
 })
+
+devtools(store, { name: 'demo', enabled: true })
+
 function C() {
   console.log('C')
   const { count, doubled, quadrupled } = useSnapshot(store)

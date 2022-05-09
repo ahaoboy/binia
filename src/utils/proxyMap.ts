@@ -14,7 +14,7 @@ type InternalProxyMap<K, V> = Map<K, V> & {
  * The API is the same as Map API
  *
  * @example
- * import { proxyMap } from 'valtio/utils'
+ * import { proxyMap } from 'binia'
  * const state = proxyMap([["key", "value"]])
  *
  * //can be used inside a proxy as well
@@ -25,7 +25,7 @@ type InternalProxyMap<K, V> = Map<K, V> & {
  *
  * // When using an object as a key, you can wrap it with `ref` so it's not proxied
  * // this is useful if you want to preserve the key equality
- * import { ref } from 'valtio'
+ * import { ref } from 'binia'
  *
  * const key = ref({})
  * state.set(key, "value")

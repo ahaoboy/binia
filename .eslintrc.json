@@ -101,8 +101,8 @@
       "alias": {
         "extensions": [".js", ".jsx", ".ts", ".tsx", ".json"],
         "map": [
-          ["^valtio$", "./src/index.ts"],
-          ["valtio", "./src"]
+          ["^binia$", "./src/index.ts"],
+          ["binia", "./src"]
         ]
       }
     }

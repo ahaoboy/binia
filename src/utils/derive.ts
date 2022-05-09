@@ -164,8 +164,8 @@ export const unstable_deriveSubscriptions = {
  * to a new proxy object or an existing proxy object.
  *
  * @example
- * import { proxy } from 'valtio'
- * import { derive } from 'valtio/utils'
+ * import { proxy } from 'binia'
+ * import { derive } from 'binia'
  *
  * const state = proxy({
  *   count: 1,
@@ -274,8 +274,8 @@ export function derive<T extends object, U extends object>(
  * and you can attach new derived properties.
  *
  * @example
- * import { proxy } from 'valtio'
- * import { derive, underive } from 'valtio/utils'
+ * import { proxy } from 'binia'
+ * import { derive, underive } from 'binia'
  *
  * const state = proxy({
  *   count: 1,
