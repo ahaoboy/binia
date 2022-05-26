@@ -79,6 +79,7 @@
     ]
   },
   "devDependencies": {
+    "redux": "^4.2.0",
     "@redux-devtools/extension": "^3.2.2",
     "@swc/core": "^1.2.164",
     "@swc/jest": "^0.2.20",
