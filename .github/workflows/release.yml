@@ -1,0 +1,40 @@
+# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
+
+name: Binia Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release Tag(canary, beta, latest)'
+        required: true
+        default: 'beta'
+      branch:
+        description: 'Release Branch(confirm release branch)'
+        required: true
+        default: 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.inputs.branch }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: https://registry.npmjs.org/
+      - name: install
+        run: |
+          npm install pnpm -g
+          pnpm install
+          npm run build
+          npm run test
+      - name: publish
+        run: npm publish --tag $Tag
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          Tag: ${{ github.event.inputs.tag }}
