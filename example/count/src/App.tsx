@@ -1,5 +1,4 @@
-import { defineStore, devtools, useSnapshot } from '../../dist'
-
+import { defineStore, useSnapshot } from 'binia'
 const store = defineStore({
   state: { count: 1 },
   computed: {
@@ -16,8 +15,9 @@ const store = defineStore({
     },
   },
 })
-
-devtools(store, { name: 'demo', enabled: true })
+// actions
+const inc = () => store.count++
+const dec = () => store.quadrupled--
 
 function C() {
   console.log('C')
@@ -30,12 +30,30 @@ function C() {
     </div>
   )
 }
+
+const state2 = defineStore({
+  state: {
+    firstName: 'Alec',
+    lastName: 'Baldwin',
+  },
+  computed: {
+    fullName: {
+      get() {
+        return this.firstName + ' ' + this.lastName
+      },
+      set(newValue: string) {
+        ;[this.firstName, this.lastName] = newValue.split(' ')
+      },
+    },
+  },
+})
+
 function App() {
   return (
     <div>
       <C />
-      <button onClick={() => store.count++}>inc count</button>
-      <button onClick={() => store.quadrupled--}>dec count</button>
+      <button onClick={inc}>inc count</button>
+      <button onClick={dec}>dec count</button>
     </div>
   )
 }

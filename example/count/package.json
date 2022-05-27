@@ -1,16 +1,16 @@
 {
-  "name": "demo",
+  "name": "binia-count",
   "private": true,
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "binia": "latest",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "use-sync-external-store": "^1.0.0"
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@types/react": "^17.0.33",

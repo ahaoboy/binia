@@ -1,6 +1,6 @@
 {
   "name": "binia",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "",
   "main": "./dist/index.js",
   "import": "./dist/index.mjs",
@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "dev": "tsup --watch",
-    "eslint": "eslint src/**/* demo/src/**/* test/**/*",
+    "eslint": "eslint src/**/* example/ test/**/*",
     "build": "cross-env NODE_ENV=production  tsup",
     "test": "vitest"
   },
