@@ -27,11 +27,14 @@ type Model<S, C, D, P = S & GetCompleted<C>> = {
   options?: Partial<Options>
 }
 
+type DefDerive = Record<string, (get: GetFn) => unknown>
 export function defineStore<
   S extends State,
-  C,
-  D extends Record<string, (get: GetFn) => any>
->(model: Model<S, C, D>): S & GetCompleted<C> & Snapshot<GetDerive<D>> {
+  C = {},
+  D extends DefDerive = DefDerive
+>(
+  model: Model<S, C, D>
+): S & GetCompleted<C> & (DefDerive extends D ? {} : Snapshot<GetDerive<D>>) {
   const { state = {}, computed = {}, derive = {}, options = {} } = model
   const p = proxyWithComputed(state, computed, {
     size: options.computedCacheSize ?? 2,

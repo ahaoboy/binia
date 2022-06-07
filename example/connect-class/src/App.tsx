@@ -17,7 +17,6 @@ type Snap = Snapshot<Store>
 const mapState = (snap: Snap) => {
   return {
     c: snap.count,
-    d: snap.quadrupled,
   }
 }
 type MapState = ReturnType<typeof mapState>
