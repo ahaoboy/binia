@@ -180,12 +180,12 @@ function withProxy<
 }
 export function connect<
   Store extends object,
-  S extends object,
-  A extends object
+  S extends object = {},
+  A extends object = {}
 >(
   store: Store,
-  mapState?: (snap?: Snapshot<Store>, props?: any) => S,
-  mapActions?: (store?: Store, props?: any) => A
+  mapState?: (snap: Snapshot<Store>, props?: any) => S,
+  mapActions?: (store: Store, props?: any) => A
 ) {
   return <P extends object>(C: ComponentType<P>) =>
     withProxy(store, C, mapState, mapActions)

@@ -9,7 +9,7 @@ on:
       tag:
         description: 'Release Tag(canary, beta, latest)'
         required: true
-        default: 'beta'
+        default: 'latest'
       branch:
         description: 'Release Branch(confirm release branch)'
         required: true

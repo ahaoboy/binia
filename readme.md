@@ -8,7 +8,7 @@ inspired by [valtio](https://github.com/pmndrs/valtio)
 - [derive](https://stackblitz.com/github/ahaoboy/binia/tree/main/example/derive?title=binia-derive&file=src/App.tsx&terminal=dev)
 - [xstate](https://stackblitz.com/github/ahaoboy/binia/tree/main/example/xstate?title=binia-xstate&file=src/App.tsx&terminal=dev)
 - [set/map](https://stackblitz.com/github/ahaoboy/binia/tree/main/example/set-map?title=binia-set-map&file=src/App.tsx&terminal=dev)
-- [class](https://stackblitz.com/github/ahaoboy/binia/tree/main/example/class?title=binia-class&file=src/App.tsx&terminal=dev)
+- [connect-class](https://stackblitz.com/github/ahaoboy/binia/tree/main/example/connect-class?title=binia-connect-class&file=src/App.tsx&terminal=dev)
 - [react18](https://stackblitz.com/github/ahaoboy/binia/tree/main/example/react18?title=binia-react18&file=src/App.tsx&terminal=dev)
 - [devtool](https://stackblitz.com/github/ahaoboy/binia/tree/main/example/devtool?title=binia-devtool&file=src/App.tsx&terminal=dev)
 
