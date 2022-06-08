@@ -27,6 +27,7 @@ const store = defineStore({
       return 'hello: ' + get(this).count + get(storeA).hw
     },
     helloDouble(get) {
+      // FIXME: support use computed in derive
       return 'hello: ' + get(this as any).doubled + get(storeA).hw
     },
   },

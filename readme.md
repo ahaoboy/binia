@@ -11,6 +11,7 @@ inspired by [valtio](https://github.com/pmndrs/valtio)
 - [connect-class](https://stackblitz.com/github/ahaoboy/binia/tree/main/example/connect-class?title=binia-connect-class&file=src/App.tsx&terminal=dev)
 - [react18](https://stackblitz.com/github/ahaoboy/binia/tree/main/example/react18?title=binia-react18&file=src/App.tsx&terminal=dev)
 - [devtool](https://stackblitz.com/github/ahaoboy/binia/tree/main/example/devtool?title=binia-devtool&file=src/App.tsx&terminal=dev)
+- [suspense](https://stackblitz.com/github/ahaoboy/binia/tree/main/example/suspense?title=binia-suspense&file=src/App.tsx&terminal=dev)
 
 ## install
 

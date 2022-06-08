@@ -1,4 +1,4 @@
-import { devtools, defineStore, useSnapshot } from 'binia'
+import { defineStore, devtools, useSnapshot } from 'binia'
 
 const store = defineStore({
   state: { count: 1 },

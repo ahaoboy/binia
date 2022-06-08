@@ -1,6 +1,6 @@
+import type { Snapshot, SnapshotComputed } from './type'
 import { derive as proxyWithDerive } from './utils/derive'
 import { proxyWithComputed } from './utils/proxyWithComputed'
-import type { Snapshot } from './vanilla'
 
 type State = Record<string, any>
 type GetFn = <T>(s: T) => Snapshot<T>
@@ -20,17 +20,17 @@ type Options = {
   sync: boolean
   computedCacheSize: number
 }
-type Model<S, C, D, P = S & GetCompleted<C>> = {
+type Model<S, C, D, P = SnapshotComputed<S> & GetCompleted<C>> = {
   state: S
   computed?: C & ThisType<P>
-  derive?: D & ThisType<S>
+  derive?: D & ThisType<SnapshotComputed<S>>
   options?: Partial<Options>
 }
 
 type DefDerive = Record<string, (get: GetFn) => unknown>
 export function defineStore<
   S extends State,
-  C = {},
+  C extends object = {},
   D extends DefDerive = DefDerive
 >(
   model: Model<S, C, D>

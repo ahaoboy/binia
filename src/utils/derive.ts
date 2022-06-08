@@ -1,5 +1,5 @@
+import type { Snapshot } from '../type'
 import { getVersion, proxy, subscribe } from '../vanilla'
-import type { Snapshot } from '../vanilla'
 type DeriveGet = <T extends object>(proxyObject: T) => T
 
 type Subscription = {

@@ -12,7 +12,8 @@ import {
   isChanged,
 } from 'proxy-compare'
 import useSyncExternalStoreExports from 'use-sync-external-store/shim'
-import { Snapshot, snapshot, subscribe } from './vanilla'
+import { snapshot, subscribe } from './vanilla'
+import type { Snapshot } from './type'
 
 const { useSyncExternalStore } = useSyncExternalStoreExports
 const useAffectedDebugValue = (

@@ -1,4 +1,5 @@
 import { getUntracked, markToTrack } from 'proxy-compare'
+import type { AsRef, Snapshot } from './type'
 
 const VERSION = Symbol()
 const LISTENERS = Symbol()
@@ -7,7 +8,6 @@ const HANDLER = Symbol()
 const PROMISE_RESULT = Symbol()
 const PROMISE_ERROR = Symbol()
 
-type AsRef = { $$biniaRef: true }
 const refSet = new WeakSet()
 export function ref<T extends object>(o: T): T & AsRef {
   refSet.add(o)
@@ -244,17 +244,6 @@ export function subscribe<T extends object>(
     ;(proxyObject as any)[LISTENERS].delete(listener)
   }
 }
-
-type AnyFunction = (...args: any[]) => any
-export type Snapshot<T> = T extends AnyFunction
-  ? T
-  : T extends AsRef
-  ? T
-  : T extends Promise<infer V>
-  ? Snapshot<V>
-  : {
-      readonly [K in keyof T]: Snapshot<T[K]>
-    }
 
 export function snapshot<T extends object>(proxyObject: T): Snapshot<T> {
   if (
