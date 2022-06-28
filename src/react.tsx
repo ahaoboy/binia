@@ -11,9 +11,9 @@ import {
   createProxy as createProxyToCompare,
   isChanged,
 } from 'proxy-compare'
-import useSyncExternalStoreExports from 'use-sync-external-store/shim'
-import { snapshot, subscribe } from './vanilla'
+import * as useSyncExternalStoreExports from 'use-sync-external-store/shim'
 import type { Snapshot } from './type'
+import { snapshot, subscribe } from './vanilla'
 
 const { useSyncExternalStore } = useSyncExternalStoreExports
 const useAffectedDebugValue = (

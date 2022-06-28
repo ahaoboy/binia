@@ -1,17 +1,21 @@
 {
   "name": "binia",
-  "version": "1.0.25",
+  "version": "1.0.28",
   "description": "react state manager",
-  "main": "./dist/index.js",
-  "import": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/cjs/index.js",
+  "import": "./dist/esm/index.js",
+  "types": "./dist/cjs/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "dev": "tsup --watch",
+    "dev": "npm run dev:cjs && npm run dev:esm",
     "eslint": "eslint src/**/* example/ test/**/*",
-    "build": "cross-env NODE_ENV=production  tsup",
+    "build": "npm run build:cjs && npm run build:esm",
+    "build:cjs": "tsc -p ./tsconfig.cjs.json",
+    "build:esm": "tsc -p ./tsconfig.esm.json",
+    "dev:cjs": "tsc -w -p ./tsconfig.cjs.json",
+    "dev:esm": "tsc -w -p ./tsconfig.esm.json",
     "test": "vitest"
   },
   "repository": {
@@ -109,7 +113,6 @@
     "react-dom": "^18.0.0",
     "shx": "^0.3.4",
     "tslib": "^2.3.1",
-    "tsup": "^5.12.1",
     "typescript": "^4.5.4",
     "vite": "^2.9.8",
     "vitest": "^0.10.2"
