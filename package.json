@@ -1,10 +1,10 @@
 {
   "name": "binia",
   "version": "1.0.25",
-  "description": "",
+  "description": "react state manager",
   "main": "./dist/index.js",
   "import": "./dist/index.mjs",
-  "types": "./dist/index.d.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
